@@ -20,6 +20,15 @@ export default async function summarizeRequest(
 }
 
 function isFilePathSource(fs: FileSystem, filePath: FilePath) {
+  if (process.env.FORCE_TRANSPILE) {
+    for (const thing of process.env.FORCE_TRANSPILE.split(',')) {
+      if (filePath.includes(thing)) {
+        // eslint-disable-next-line no-console
+        console.log('FORCE TRANSPILING', filePath);
+        return true;
+      }
+    }
+  }
   return !filePath.includes(NODE_MODULES);
 }
 
